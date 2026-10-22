@@ -1,0 +1,1 @@
+# O app.py utiliza bibliotecas nativas do Python.
