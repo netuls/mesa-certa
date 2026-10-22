@@ -6,7 +6,10 @@ import json, sqlite3, datetime as dt, csv, io
 
 BASE = Path(__file__).resolve().parent
 DB = Path(__import__('os').environ.get('MESA_DB', BASE / 'mesa_certa.db'))
-HOST, PORT = '127.0.0.1', int(__import__('os').environ.get('PANEL_PORT', '8080'))
+import os
+
+HOST = '0.0.0.0'
+PORT = int(os.environ.get('PORT', os.environ.get('PANEL_PORT', '10000')))
 AS_OF = dt.datetime(2026, 10, 12, 8, 0, 0)  # referência exigida no enunciado
 FORM_FIM_UTC = '2026-10-12T00:00:00Z'  # fim do lote do webhook (domingo 21h em Brasília)
 STAGES = ['Novo', 'Contato', 'Reunião marcada', 'Reunião realizada', 'Perdido']
@@ -186,6 +189,14 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args): print('[%s] %s' % (self.log_date_time_string(), fmt % args))
 
 if __name__ == '__main__':
-    print(f'Mesa Certa • Painel Comercial: http://127.0.0.1:{PORT}')
-    print(f'Banco em modo somente leitura: {DB}')
+    print(f'Mesa Certa iniciado na porta {PORT}', flush=True)
+    print(f'Banco em modo somente leitura: {DB}', flush=True)
+
+    try:
+        server = ThreadingHTTPServer((HOST, PORT), Handler)
+        print('Servidor pronto para receber conexões.', flush=True)
+        server.serve_forever()
+    except Exception as e:
+        print(f'Erro ao iniciar o servidor: {e}', flush=True)
+        raise
     ThreadingHTTPServer((HOST, PORT), Handler).serve_forever()
