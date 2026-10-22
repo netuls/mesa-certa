@@ -1,0 +1,5 @@
+# Assinaturas do lote de teste que NAO batem com o segredo (conferidas uma vez com o segredo real).
+# Usadas so pelo painel local, quando WEBHOOK_SECRET nao esta definido. Nao contem o segredo.
+sha256=ec87998a0fb8b0aabb8296e9466ce858766943cafb74edc8510022104583c342
+sha256=d908c06286142591b46234b49235dfb131c8a43deaa8c92d873b8e2444fce362
+sha256=210eccee161598869227fddd96c14fffda59290c32f2b13de7fa06800842c89e

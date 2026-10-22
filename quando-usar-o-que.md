@@ -1,0 +1,3 @@
+- **Chat:** para entender os dados e decidir definições (por exemplo, "o que conta como pedido de demonstração?") e para redigir o texto para a gestora; nada que precise ficar rodando nem mexer em arquivo.
+- **Assistente que age no projeto** (Claude Code, com `CLAUDE.md`, skill e hook): para mudar o código, rodar os testes e a prova no CRM e manter o log, porque ele edita arquivos e o hook confere cada mudança.
+- **Script agendado** (`rodar_semana.sh` no cron, com o `receptor.py` sempre no ar): para o que se repete sozinho, como receber os pedidos, levar ao CRM e mandar o resumo toda segunda às 07:00.

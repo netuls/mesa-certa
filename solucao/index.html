@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mesa Certa · Painel comercial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--ink:#f4efff;--muted:#a99fc9;--line:rgba(150,120,255,.2);--bg:#0e0820;--card:#171034;--brand:#7c3aed;--lilas:#c4a1ff;--track:#2a2050;
+--novo:#6f8dff;--contato:#f4b73f;--marcada:#b794ff;--realizada:#2fd3a0;--perdido:#f26d7d;--cinza:#5b5080;
+--grad:linear-gradient(135deg,#6d3df5,#9b5cf6);
+--r:16px;--font:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.45;
+background:var(--bg) radial-gradient(900px 420px at 88% -120px,rgba(139,92,246,.55),transparent 70%) no-repeat,radial-gradient(760px 520px at -5% 0,rgba(91,33,182,.35),transparent 70%) no-repeat}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--lilas);outline-offset:2px;border-radius:6px}
+header{background:rgba(18,10,44,.72);border-bottom:1px solid var(--line);color:#fff;backdrop-filter:blur(10px)}
+.top{max-width:1240px;margin:0 auto;padding:18px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:12px;font-weight:800;font-size:21px;letter-spacing:-.015em;color:var(--lilas)}
+.logo i{width:38px;height:38px;border-radius:12px;background:var(--grad);display:grid;place-items:center;box-shadow:0 8px 22px rgba(124,58,237,.5)}
+.logo svg{width:21px;height:21px}
+.top h1{margin:0;font-size:15px;font-weight:600;color:var(--muted);padding-left:16px;border-left:1px solid var(--line)}
+.spacer{flex:1}
+.nav{display:flex;gap:4px;margin-left:8px;padding:4px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px}.nav a{color:#d9ccff;text-decoration:none;font-size:14px;font-weight:600;padding:7px 14px;border-radius:9px}.nav a:hover{background:rgba(139,92,246,.25);color:#fff}
+html{scroll-behavior:smooth;scroll-padding-top:12px}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.asof{font-size:13px;background:rgba(139,92,246,.16);color:#d9ccff;border:1px solid var(--line);padding:7px 12px;border-radius:999px}
+.btn{background:var(--grad);color:#fff;border:0;border-radius:11px;padding:10px 18px;font-weight:700;font-size:14px;box-shadow:0 8px 20px rgba(109,61,245,.4)}
+.btn:hover{filter:brightness(1.1)}
+.btn:disabled{opacity:.6;cursor:wait}
+main{max-width:1240px;margin:0 auto;padding:24px 24px 48px}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.card{background:linear-gradient(180deg,rgba(36,24,80,.88),rgba(23,16,52,.92));border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:0 12px 32px rgba(6,2,20,.35)}
+.kpi small{display:block;color:var(--muted);font-weight:600;font-size:13px}
+.kpi b{display:block;font-size:34px;font-weight:800;letter-spacing:-.03em;margin:6px 0 2px;line-height:1.1;color:#fff}
+.kpi span{font-size:12.5px;color:var(--muted)}
+.kpi.alerta{border-color:rgba(242,109,125,.5);background:linear-gradient(180deg,rgba(110,28,58,.5),rgba(42,14,44,.92))}.kpi.alerta b{color:#ff8b99}
+.kpi.destaque{background:linear-gradient(135deg,rgba(109,61,245,.55),rgba(42,24,96,.92));border-color:rgba(167,139,250,.55)}.kpi.destaque b{color:#fff}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:14px}
+h2{margin:0;font-size:17px;letter-spacing:-.01em;color:#fff}
+.sub{margin:3px 0 16px;color:var(--muted);font-size:13.5px}
+.donut{display:flex;align-items:center;gap:26px;flex-wrap:wrap}
+.donut svg{width:188px;height:188px;flex:none}
+.donut .c1{font-size:7.2px;font-weight:800;fill:#fff}.donut .c2{font-size:2.9px;fill:var(--muted);font-weight:600}
+.leg{list-style:none;margin:0;padding:0;flex:1;min-width:210px}
+.leg li{display:grid;grid-template-columns:12px 1fr auto 46px;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
+.leg li:last-child{border:0}.leg i{width:12px;height:12px;border-radius:4px}.leg b{font-weight:800;color:#fff}.leg em{font-style:normal;color:var(--muted);text-align:right;font-size:13px}
+.sdr{display:grid;gap:18px}
+.sdr .l{display:flex;justify-content:space-between;font-weight:700;margin-bottom:7px}
+.sdr .l span{font-weight:600;color:var(--muted);font-size:13px}
+.bar{display:flex;height:16px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,.08);gap:2px}
+.bar div{min-width:3px}
+.sdr small{display:block;margin-top:6px;color:var(--muted);font-size:12.5px}
+.pct{font-size:22px;font-weight:800;color:#fff}
+.full{margin-top:14px}
+.row{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;justify-content:space-between;margin-bottom:12px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;color:var(--muted)}
+.chip:hover{border-color:rgba(167,139,250,.6);color:#fff}
+.chip[aria-pressed=true]{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 6px 16px rgba(109,61,245,.4)}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+th{text-align:left;font-size:12.5px;color:var(--muted);font-weight:700;padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr:hover td{background:rgba(139,92,246,.08)}
+tr:last-child td{border:0}
+td small{display:block;color:var(--muted);font-size:12.5px}
+.tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12.5px;font-weight:700;background:rgba(255,255,255,.08);color:#d9ccff}
+.tag.Novo{background:rgba(111,141,255,.2);color:#aebfff}.tag.Contato{background:rgba(244,183,63,.18);color:#f8d27e}.tag.Reunião{background:rgba(183,148,255,.22);color:#dccaff}.tag.Perdido{background:rgba(242,109,125,.2);color:#ffa1ad}
+.late{font-weight:800;color:#ff8b99}.mid{font-weight:800;color:#f4b73f}
+.more{margin-top:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:11px;padding:8px 16px;font-weight:700;color:#d9ccff}
+.more:hover{background:rgba(139,92,246,.22);color:#fff}
+.empty{padding:26px;text-align:center;color:var(--muted)}
+.note{margin-top:14px;font-size:12.5px;color:var(--muted);line-height:1.55}
+.err{background:rgba(242,109,125,.12);border:1px solid rgba(242,109,125,.45);color:#ffb4bd;border-radius:var(--r);padding:16px 20px;margin-bottom:14px;display:none}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tools input,.tools select{font:inherit;font-size:14px;padding:9px 12px;border:1px solid var(--line);border-radius:11px;background:rgba(10,5,30,.6);color:var(--ink);min-width:0}
+.tools input::placeholder{color:#8277a8}
+.tools input{flex:1;min-width:200px}
+.btn2{background:var(--grad);color:#fff;border:0;border-radius:11px;padding:9px 16px;font-weight:700;font-size:14px}
+.pag{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;flex-wrap:wrap;color:var(--muted);font-size:13.5px}
+.pag div{display:flex;gap:8px}.pag button{border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:11px;padding:7px 14px;font-weight:700;color:#d9ccff}
+.pag button:disabled{opacity:.4;cursor:default}
+.form{display:flex;gap:26px;flex-wrap:wrap;align-items:center}
+.form b{font-size:30px;font-weight:800;letter-spacing:-.02em;color:#fff}
+@media(max-width:980px){.nav{display:none}.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.top h1{display:none}}
+@media(max-width:520px){main{padding:16px 14px 40px}.top{padding:14px}.kpis{gap:10px}.kpi b{font-size:28px}.donut svg{margin:0 auto}}
+@media(prefers-reduced-motion:no-preference){.donut circle{transition:stroke-dasharray .6s ease}}
+</style>
+</head>
+<body>
+<header><div class="top">
+  <div class="logo"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M7 3v8M11 3v8M7 7h4M9 11v10M17 3c-2 2-2.5 5-2.5 8h2.5v10"/></svg></i>Mesa Certa</div>
+  <h1>Painel comercial</h1><nav class="nav" aria-label="Seções"><a href="#cobrar">Cobrar hoje</a><a href="#todos">Todos os negócios</a><a href="#formulario">Formulário</a></nav><div class="spacer"></div>
+  <span class="asof" id="asof">Carregando…</span>
+  <button class="btn" id="btn" type="button">Atualizar dados</button>
+</div></header>
+
+<main>
+  <div class="err" id="err" role="alert"></div>
+
+  <section class="kpis" aria-label="Resumo">
+    <div class="card kpi destaque"><small>Pedidos de demonstração</small><b id="k-demo">–</b><span id="k-demop">pessoas, de 05 a 11/10</span></div>
+    <div class="card kpi"><small>Negócios em andamento</small><b id="k-ativos">–</b><span id="k-total"></span></div>
+    <div class="card kpi"><small>Reuniões marcadas ou feitas</small><b id="k-reun">–</b><span id="k-reunp"></span></div>
+    <div class="card kpi"><small>Perdidos</small><b id="k-perd">–</b><span id="k-perdp"></span></div>
+    <div class="card kpi alerta"><small>Esperando contato (todas as datas)</small><b id="k-sem">–</b><span>pedidos para cobrar hoje</span></div>
+  </section>
+
+  <section class="grid">
+    <article class="card"><h2>Como está o time hoje</h2><p class="sub">Negócios por fase do CRM</p><div class="donut" id="d-funil"></div></article>
+    <article class="card"><h2>Retorno em até 4 horas úteis</h2><p class="sub">Pedidos de 05 a 11/10: os que já passaram do prazo ou ainda estão dentro dele</p><div class="donut" id="d-sla"></div></article>
+  </section>
+
+  <section class="card full">
+    <h2>Retorno por responsável</h2><p class="sub">Mostra de quem é o negócio. O CRM não guarda quem ligou, então isto não prova que uma pessoa específica demorou.</p>
+    <div class="sdr" id="sdr"></div>
+  </section>
+
+  <section class="card full" id="cobrar">
+    <div class="row"><div><h2>Para cobrar hoje</h2><p class="sub" style="margin:3px 0 0" id="cobrar-sub"></p></div><div class="chips" id="chips" role="group" aria-label="Filtrar por responsável"></div></div>
+    <div class="tw"><table><thead><tr><th>Restaurante</th><th>Contato</th><th>Responsável</th><th>Pedido feito em</th><th>Sem retorno há</th></tr></thead><tbody id="pend"></tbody></table></div>
+    <button class="more" id="more" type="button" hidden></button>
+  </section>
+
+  <section class="card full">
+    <h2>Últimas atualizações no CRM</h2><p class="sub">Os 8 negócios mexidos mais recentemente</p>
+    <div class="tw"><table><thead><tr><th>Restaurante</th><th>Contato</th><th>Fase</th><th>Responsável</th><th>Atualizado em</th></tr></thead><tbody id="rec"></tbody></table></div>
+  </section>
+
+  <section class="card full" id="todos">
+    <div class="row"><div><h2>Todos os negócios</h2><p class="sub" style="margin:3px 0 0" id="deals-sub"></p></div><button class="btn2" id="csv" type="button">Baixar lista (CSV)</button></div>
+    <div class="tools">
+      <input id="q" type="search" placeholder="Buscar por restaurante, contato, e-mail ou número" aria-label="Buscar negócios">
+      <select id="f-etapa" aria-label="Filtrar por fase"></select>
+      <select id="f-resp" aria-label="Filtrar por responsável"></select>
+      <select id="f-origem" aria-label="Filtrar por origem"></select>
+    </div>
+    <div class="tw"><table><thead><tr><th>Nº</th><th>Restaurante</th><th>Contato</th><th>Fase</th><th>Responsável</th><th>Origem</th><th>Criado em</th><th>Atualizado em</th></tr></thead><tbody id="all"></tbody></table></div>
+    <div class="pag"><span id="pag-info"></span><div><button type="button" id="prev">Anterior</button><button type="button" id="next">Próxima</button></div></div>
+  </section>
+
+  <section class="card full" id="formulario">
+    <h2>Pedidos recebidos pelo formulário</h2><p class="sub">Cobertura da base local do formulário</p>
+    <div class="form"><div><b id="form-n">–</b><br><span class="sub" id="form-range"></span></div><ul class="leg" id="form-cats" style="max-width:360px"></ul></div>
+  </section>
+
+</main>
+
+<script>
+const $=id=>document.getElementById(id), nf=n=>Number(n||0).toLocaleString('pt-BR');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sdrName=s=>String(s||'').replace(/^sdr_?(\d+)/i,'SDR $1')||'Sem responsável';
+const COR={'Novo':'--novo','Contato':'--contato','Reunião marcada':'--marcada','Reunião realizada':'--realizada','Perdido':'--perdido'};
+const v=n=>`var(${n})`;
+let D=null, filtro='todos', mostrarTodos=false;
+
+function donut(el,itens,grande,pequeno){
+  const total=itens.reduce((a,i)=>a+i.valor,0)||1, R=15.915; let acc=0;
+  const arcos=itens.filter(i=>i.valor>0).map(i=>{const p=i.valor/total*100,off=-acc;acc+=p;
+    return `<circle cx="21" cy="21" r="${R}" fill="none" stroke="${i.cor}" stroke-width="6.2" stroke-dasharray="${Math.max(p-.5,.1)} ${100-Math.max(p-.5,.1)}" stroke-dashoffset="${off+25}"><title>${esc(i.nome)}: ${nf(i.valor)} (${Math.round(p)}%)</title></circle>`}).join('');
+  el.innerHTML=`<svg viewBox="0 0 42 42" role="img" aria-label="${esc(pequeno)}: ${itens.map(i=>i.nome+' '+i.valor).join(', ')}"><circle cx="21" cy="21" r="${R}" fill="none" stroke="#2a2050" stroke-width="6.2"/>${arcos}<text x="21" y="22.4" text-anchor="middle" class="c1">${nf(grande)}</text><text x="21" y="27" text-anchor="middle" class="c2">${esc(pequeno)}</text></svg>
+  <ul class="leg">${itens.map(i=>`<li><i style="background:${i.cor}"></i><span>${esc(i.nome)}</span><b>${nf(i.valor)}</b><em>${Math.round(i.valor/total*100)}%</em></li>`).join('')}</ul>`;
+}
+const SEMANA_INI='2026-10-05 00:00:00',SEMANA_FIM='2026-10-12 00:00:00';
+const diasUteis=h=>h>=10?`${Math.floor(h/10)} ${Math.floor(h/10)===1?'dia útil':'dias úteis'}`:`${Math.round(h)} h úteis`;
+const dataBr=s=>{const m=String(s||'').match(/(\d{4})-(\d\d)-(\d\d)[ T](\d\d:\d\d)/);return m?`${m[3]}/${m[2]} ${m[4]}`:'–'};
+const tag=e=>`<span class="tag ${esc(String(e).split(' ')[0])}">${esc(e)}</span>`;
+
+function render(){
+  const F=D.funnel, tot=D.total, perd=D.perdidos, reun=D.reunioes, sem=D.pending.length;
+  $('asof').textContent='Dados de '+D.as_of;
+  $('k-ativos').textContent=nf(D.ativos); $('k-total').textContent=`de ${nf(tot)} no CRM`;
+  $('k-reun').textContent=nf(reun); $('k-reunp').textContent=`${Math.round(reun/tot*100)}% dos negócios`;
+  $('k-perd').textContent=nf(perd); $('k-perdp').textContent=`${Math.round(perd/tot*100)}% dos negócios`;
+  $('k-sem').textContent=nf(sem);
+  const PD=D.pedidos_demo;
+  $('k-demo').textContent=PD?nf(PD.pessoas):'–';
+  $('k-demop').textContent=PD?'pessoas, de 05 a 11/10':'importe o lote do webhook (05 a 11/10)';
+  donut($('d-funil'),F.map(f=>({nome:f.etapa,valor:f.quantidade,cor:v(COR[f.etapa]||'--cinza')})),tot,'negócios');
+  const S=D.sdr.reduce((a,s)=>({ok:a.ok+s.no_prazo,at:a.at+s.atrasados,sr:a.sr+s.sem_retorno,dp:a.dp+s.dentro_prazo}),{ok:0,at:0,sr:0,dp:0});
+  donut($('d-sla'),[{nome:'Retornou no prazo',valor:S.ok,cor:v('--realizada')},{nome:'Retornou atrasado',valor:S.at,cor:v('--contato')},{nome:'Sem retorno nesta semana',valor:S.sr,cor:v('--perdido')},{nome:'Ainda dentro das 4 horas',valor:S.dp,cor:v('--cinza')}],S.ok+S.at+S.sr+S.dp,'negócios');
+  $('sdr').innerHTML=D.sdr.map(s=>{const t=s.no_prazo+s.atrasados+s.sem_retorno+s.dentro_prazo||1,w=x=>(x/t*100).toFixed(1)+'%';
+    return `<div><div class="l"><span class="pct">${esc(sdrName(s.responsavel))} · ${s.pct_no_prazo}% no prazo</span><span>${nf(t)} negócios</span></div>
+    <div class="bar" role="img" aria-label="${esc(sdrName(s.responsavel))}: ${s.no_prazo} no prazo, ${s.atrasados} atrasados, ${s.sem_retorno} sem retorno, ${s.dentro_prazo} ainda dentro do prazo">
+    <div style="width:${w(s.no_prazo)};background:var(--realizada)"></div><div style="width:${w(s.atrasados)};background:var(--contato)"></div><div style="width:${w(s.sem_retorno)};background:var(--perdido)"></div><div style="width:${w(s.dentro_prazo)};background:var(--cinza)"></div></div>
+    <small>${s.no_prazo} no prazo · ${s.atrasados} atrasados · ${s.sem_retorno} sem retorno · ${s.dentro_prazo} dentro das 4 horas</small></div>`}).join('');
+  desenharPendentes(); desenharRecentes(); iniciarNegocios(); desenharFormulario();
+}
+function desenharPendentes(){
+  const resp=[...new Set(D.pending.map(p=>p.responsavel))].sort();
+  $('chips').innerHTML=['todos',...resp].map(r=>`<button type="button" class="chip" data-r="${esc(r)}" aria-pressed="${r===filtro}">${r==='todos'?'Todos ('+D.pending.length+')':esc(sdrName(r))+' ('+D.pending.filter(p=>p.responsavel===r).length+')'}</button>`).join('');
+  document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filtro=b.dataset.r;mostrarTodos=false;desenharPendentes()});
+  const L=D.pending.filter(p=>filtro==='todos'||p.responsavel===filtro).sort((a,b)=>b.horas_uteis-a.horas_uteis);
+  $('cobrar-sub').textContent=`${L.length} pedidos esperando o primeiro contato há mais de 4 horas úteis, do mais antigo para o mais recente`;
+  const vis=mostrarTodos?L:L.slice(0,12);
+  $('pend').innerHTML=vis.map(p=>`<tr><td><b>${esc(p.restaurante)}</b></td><td>${esc(p.nome)}<small>${esc(p.telefone||p.email)}</small></td><td>${esc(sdrName(p.responsavel))}</td><td>${dataBr(p.criado_em)}${p.criado_em<SEMANA_INI?'<small>antes da semana</small>':''}</td><td class="${p.horas_uteis>=40?'late':'mid'}">${diasUteis(p.horas_uteis)}</td></tr>`).join('')||`<tr><td colspan="5" class="empty">Nenhum pedido sem retorno. Bom trabalho!</td></tr>`;
+  const m=$('more'); m.hidden=L.length<=12; m.textContent=mostrarTodos?'Mostrar só os 12 mais antigos':`Mostrar todos (${L.length})`;
+  m.onclick=()=>{mostrarTodos=!mostrarTodos;desenharPendentes()};
+}
+
+let pag=1; const POR=20;
+const CATNOME={venda:'Pedidos de venda',teste:'Testes',suporte:'Pedidos de suporte',fornecedor:'Fornecedores',spam:'Spam'};
+function opcoes(sel,rotulo,valores,nome){const a=sel.value;sel.innerHTML=`<option value="">${rotulo}</option>`+valores.map(x=>`<option value="${esc(x)}">${esc(nome?nome(x):x)}</option>`).join('');sel.value=a}
+function filtrarNegocios(){
+  const q=$('q').value.trim().toLowerCase(),e=$('f-etapa').value,r=$('f-resp').value,o=$('f-origem').value;
+  return D.deals.filter(d=>(!e||d.etapa===e)&&(!r||d.responsavel===r)&&(!o||d.origem===o)&&(!q||[d.restaurante,d.nome,d.email,d.deal_id].join(' ').toLowerCase().includes(q)))
+    .sort((a,b)=>String(b.atualizado_em).localeCompare(String(a.atualizado_em)));
+}
+function desenharNegocios(){
+  const L=filtrarNegocios(),pgs=Math.max(1,Math.ceil(L.length/POR)); pag=Math.min(pag,pgs);
+  const ini=(pag-1)*POR,vis=L.slice(ini,ini+POR);
+  $('deals-sub').textContent=`${nf(L.length)} de ${nf(D.deals.length)} negócios, do mais recente para o mais antigo`;
+  $('all').innerHTML=vis.map(d=>`<tr><td>${esc(d.deal_id)}</td><td><b>${esc(d.restaurante)}</b></td><td>${esc(d.nome)}<small>${esc(d.email)}</small></td><td>${tag(d.etapa)}</td><td>${esc(sdrName(d.responsavel))}</td><td>${esc(d.origem)}</td><td>${dataBr(d.criado_em)}</td><td>${dataBr(d.atualizado_em)}</td></tr>`).join('')||`<tr><td colspan="8" class="empty">Nenhum negócio encontrado com esses filtros.</td></tr>`;
+  $('pag-info').textContent=L.length?`Mostrando ${ini+1} a ${ini+vis.length} de ${nf(L.length)}`:'';
+  $('prev').disabled=pag<=1; $('next').disabled=pag>=pgs;
+}
+function iniciarNegocios(){
+  opcoes($('f-etapa'),'Todas as fases',[...new Set(D.deals.map(d=>d.etapa))]);
+  opcoes($('f-resp'),'Todos os responsáveis',[...new Set(D.deals.map(d=>d.responsavel))].sort(),sdrName);
+  opcoes($('f-origem'),'Todas as origens',[...new Set(D.deals.map(d=>d.origem))]);
+  desenharNegocios();
+}
+['q','f-etapa','f-resp','f-origem'].forEach(id=>$(id).addEventListener(id==='q'?'input':'change',()=>{pag=1;desenharNegocios()}));
+$('prev').onclick=()=>{pag--;desenharNegocios()}; $('next').onclick=()=>{pag++;desenharNegocios()};
+$('csv').onclick=()=>{
+  const c=['Nº','Restaurante','Contato','E-mail','Telefone','Fase','Responsável','Origem','Criado em','Atualizado em'];
+  const q=x=>'"'+String(x??'').replace(/"/g,'""')+'"';
+  const linhas=filtrarNegocios().map(d=>[d.deal_id,d.restaurante,d.nome,d.email,d.telefone,d.etapa,sdrName(d.responsavel),d.origem,d.criado_em,d.atualizado_em].map(q).join(';'));
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['\ufeff'+[c.map(q).join(';'),...linhas].join('\r\n')],{type:'text/csv;charset=utf-8'}));
+  a.download='negocios-mesa-certa.csv'; a.click(); URL.revokeObjectURL(a.href);
+};
+function desenharFormulario(){
+  $('form-n').textContent=nf(D.form_count)+' pedidos';
+  const r=D.form_range||{}, d=s=>s?s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(0,4):'';
+  $('form-range').textContent=r.inicio?`de ${d(r.inicio)} a ${d(r.fim)}`:'';
+  const C=D.form_categories||{}, tot=Object.values(C).reduce((a,b)=>a+b,0)||1;
+  $('form-cats').innerHTML=Object.entries(C).map(([k,n])=>`<li><i style="background:${k==='venda'?'var(--realizada)':'var(--cinza)'}"></i><span>${esc(CATNOME[k]||k)}</span><b>${nf(n)}</b><em>${Math.round(n/tot*100)}%</em></li>`).join('');
+}
+function desenharRecentes(){
+  const R=[...D.deals].sort((a,b)=>String(b.atualizado_em).localeCompare(String(a.atualizado_em))).slice(0,8);
+  $('rec').innerHTML=R.map(d=>`<tr><td><b>${esc(d.restaurante)}</b></td><td>${esc(d.nome)}</td><td>${tag(d.etapa)}</td><td>${esc(sdrName(d.responsavel))}</td><td>${dataBr(d.atualizado_em)}</td></tr>`).join('');
+}
+async function load(){
+  const b=$('btn'); b.disabled=true; b.textContent='Atualizando…'; $('err').style.display='none';
+  try{const r=await fetch('/api/dashboard'); if(!r.ok) throw new Error('o servidor respondeu '+r.status); D=await r.json(); render();}
+  catch(e){const x=$('err'); x.style.display='block'; x.textContent='Não foi possível carregar os dados ('+e.message+'). Confira se o painel local está aberto em http://127.0.0.1:8080 e clique em Atualizar dados.'; if(!D) $('asof').textContent='Sem dados';}
+  finally{b.disabled=false; b.textContent='Atualizar dados';}
+}
+$('btn').onclick=load; load();
+</script>
+</body>
+</html>
