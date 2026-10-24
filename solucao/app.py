@@ -100,6 +100,14 @@ def get_data():
         form_range = {'inicio': min(form_dates) if form_dates else None, 'fim': max(form_dates) if form_dates else None}
         counts = {}
         for e in forms: counts[classificar(e)[0]] = counts.get(classificar(e)[0], 0) + 1
+        # Pedidos do formulário por semana, em horário de Brasília (o formulário grava em UTC).
+        cat_form = [(e, classificar(e)[0]) for e in forms if e.get('criado_em')]
+        semanas = []
+        for rotulo, ini, fim in (('28/09 a 04/10', '2026-09-28 00:00:00', start), ('05/10 a 11/10', start, end)):
+            na_semana = [(e, c) for e, c in cat_form if ini <= brt(e['criado_em']) < fim]
+            vendas = [e for e, c in na_semana if c == 'venda']
+            semanas.append({'periodo': rotulo, 'pedidos': len(na_semana), 'comerciais': len(vendas),
+                            'pessoas': len({mail(e) for e in vendas}), 'outros': len(na_semana) - len(vendas)})
         # Pessoas diferentes (pelo e-mail) entre os pedidos comerciais: a mesma pessoa pode ter enviado o formulário mais de uma vez.
         pessoas_venda = len({mail(e) for e in forms if classificar(e)[0] == 'venda'})
         return {
@@ -108,7 +116,7 @@ def get_data():
             'perdidos': stages_raw.get('Perdido',0), 'pedidos_demo': pedidos_demo, 'funnel': funnel, 'sdr': sdr_list,
             'pending': sorted(pending, key=lambda x: x['horas_uteis'], reverse=True),
             'deals': deals, 'form_count': len(forms), 'form_range': form_range, 'form_categories': counts,
-            'form_pessoas_venda': pessoas_venda,
+            'form_pessoas_venda': pessoas_venda, 'form_semanas': semanas,
             'source_warning': 'Os pedidos do formulário na base local vão de %s a %s (horário UTC). O indicador de pessoas com pedido de demonstração é calculado em horário de Brasília, de 05 a 11/10.' % ((form_range['inicio'] or '—')[:10], (form_range['fim'] or '—')[:10]),
             'last_updated': max((d.get('atualizado_em') or '' for d in deals), default='')
         }
