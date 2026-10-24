@@ -236,7 +236,7 @@ function desenharFormulario(){
   const r=D.form_range||{}, d=s=>s?s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(0,4):'';
   $('form-range').textContent=r.inicio?`de ${d(r.inicio)} a ${d(r.fim)}`:'';
   const C=D.form_categories||{}, tot=Object.values(C).reduce((a,b)=>a+b,0)||1;
-  $('form-cats').innerHTML=Object.entries(C).map(([k,n])=>`<li><i style="background:${k==='venda'?'var(--realizada)':'var(--cinza)'}"></i><span>${esc(CATNOME[k]||k)}</span><b>${nf(n)}</b><em>${Math.round(n/tot*100)}%</em></li>`).join('');
+  $('form-cats').innerHTML=Object.entries(C).map(([k,n])=>`<li><i style="background:${k==='venda'?'var(--realizada)':'var(--cinza)'}"></i><span>${esc(CATNOME[k]||k)}${k==='venda'&&D.form_pessoas_venda?`<small style="display:block;color:var(--muted);font-size:12px">${nf(D.form_pessoas_venda)} pessoas diferentes</small>`:''}</span><b>${nf(n)}</b><em>${Math.round(n/tot*100)}%</em></li>`).join('');
 }
 function desenharRecentes(){
   const R=[...D.deals].sort((a,b)=>String(b.atualizado_em).localeCompare(String(a.atualizado_em))).slice(0,8);
