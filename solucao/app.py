@@ -94,12 +94,15 @@ def get_data():
         form_range = {'inicio': min(form_dates) if form_dates else None, 'fim': max(form_dates) if form_dates else None}
         counts = {}
         for e in forms: counts[classificar(e)[0]] = counts.get(classificar(e)[0], 0) + 1
+        # Pessoas diferentes (pelo e-mail) entre os pedidos comerciais: a mesma pessoa pode ter enviado o formulário mais de uma vez.
+        pessoas_venda = len({mail(e) for e in forms if classificar(e)[0] == 'venda'})
         return {
             'as_of': AS_OF.strftime('%d/%m/%Y %H:%M'), 'total': len(deals), 'ativos': len(active),
             'novos': stages_raw.get('Novo', 0), 'reunioes': stages_raw.get('Reunião marcada',0) + stages_raw.get('Reunião realizada',0),
             'perdidos': stages_raw.get('Perdido',0), 'pedidos_demo': pedidos_demo, 'funnel': funnel, 'sdr': sdr_list,
             'pending': sorted(pending, key=lambda x: x['horas_uteis'], reverse=True),
             'deals': deals, 'form_count': len(forms), 'form_range': form_range, 'form_categories': counts,
+            'form_pessoas_venda': pessoas_venda,
             'source_warning': 'A base local do formulário cobre 28/09 a 04/10/2026. O indicador de 125 pessoas para 05–11/10 é a estimativa documentada em respostas.md e não foi recalculado a partir do lote de webhook desta semana.',
             'last_updated': max((d.get('atualizado_em') or '' for d in deals), default='')
         }
