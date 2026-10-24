@@ -201,7 +201,7 @@ function desenharPendentes(){
 }
 
 let pag=1; const POR=20;
-const CATNOME={venda:'Pedidos de venda',teste:'Testes',suporte:'Pedidos de suporte',fornecedor:'Fornecedores',spam:'Spam'};
+const CATNOME={venda:'Pedidos comerciais',teste:'Testes',suporte:'Pedidos de suporte',fornecedor:'Fornecedores',spam:'Spam'};
 function opcoes(sel,rotulo,valores,nome){const a=sel.value;sel.innerHTML=`<option value="">${rotulo}</option>`+valores.map(x=>`<option value="${esc(x)}">${esc(nome?nome(x):x)}</option>`).join('');sel.value=a}
 function filtrarNegocios(){
   const q=$('q').value.trim().toLowerCase(),e=$('f-etapa').value,r=$('f-resp').value,o=$('f-origem').value;
