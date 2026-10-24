@@ -8,8 +8,10 @@ BASE = Path(__file__).resolve().parent
 DB = Path(__import__('os').environ.get('MESA_DB', BASE / 'mesa_certa.db'))
 import os
 
-HOST = '0.0.0.0'
-PORT = int(os.environ.get('PORT', os.environ.get('PANEL_PORT', '10000')))
+# Local por padrão: a tabela tem nome, e-mail e telefone de clientes e o painel não pede senha.
+# Só mude PANEL_HOST se houver autenticação na frente.
+HOST = os.environ.get('PANEL_HOST', '127.0.0.1')
+PORT = int(os.environ.get('PANEL_PORT', os.environ.get('PORT', '8080')))
 AS_OF = dt.datetime(2026, 10, 12, 8, 0, 0)  # referência exigida no enunciado
 FORM_FIM_UTC = '2026-10-12T00:00:00Z'  # fim do lote do webhook (domingo 21h em Brasília)
 STAGES = ['Novo', 'Contato', 'Reunião marcada', 'Reunião realizada', 'Perdido']
@@ -103,42 +105,11 @@ def get_data():
             'pending': sorted(pending, key=lambda x: x['horas_uteis'], reverse=True),
             'deals': deals, 'form_count': len(forms), 'form_range': form_range, 'form_categories': counts,
             'form_pessoas_venda': pessoas_venda,
-            'source_warning': 'A base local do formulário cobre 28/09 a 04/10/2026. O indicador de 125 pessoas para 05–11/10 é a estimativa documentada em respostas.md e não foi recalculado a partir do lote de webhook desta semana.',
+            'source_warning': 'Os pedidos do formulário na base local vão de %s a %s (horário UTC). O indicador de pessoas com pedido de demonstração é calculado em horário de Brasília, de 05 a 11/10.' % ((form_range['inicio'] or '—')[:10], (form_range['fim'] or '—')[:10]),
             'last_updated': max((d.get('atualizado_em') or '' for d in deals), default='')
         }
     finally: c.close()
 
-
-HTML = r"""<!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mesa Certa | Registro de contatos</title>
-<style>
-body{font-family:system-ui,Arial,sans-serif;background:#f4f6fa;color:#1a2540;margin:0;padding:24px}
-main{max-width:900px;margin:auto;background:white;padding:24px;border-radius:16px;box-shadow:0 8px 28px #17243d0a}
-h1{margin-top:0}p{color:#667085}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-label{display:block;font-weight:600;font-size:14px}input,select,textarea{width:100%;box-sizing:border-box;margin-top:6px;padding:10px;border:1px solid #ccd3df;border-radius:8px;font:inherit}
-button{margin-top:16px;background:#4767f5;color:white;border:0;padding:11px 16px;border-radius:8px;font-weight:700;cursor:pointer}
-table{border-collapse:collapse;width:100%;margin-top:18px}th,td{text-align:left;border-bottom:1px solid #e7ebf2;padding:9px;font-size:13px}
-.notice{background:#eef2ff;padding:12px;border-radius:8px;margin:14px 0}.msg{margin-top:12px;font-weight:600}
-</style></head><body><main>
-<a href="/">← Voltar ao painel</a><h1>Registro de contatos realizados</h1>
-<p>Registre quem realmente fez o contato. Essa informação fica separada do responsável pelo negócio e não altera o banco original do CRM.</p>
-<div class="notice">Para registros antigos, não invente quem ligou. Cadastre apenas contatos que possam ser confirmados.</div>
-<form id="f"><div class="grid">
-<label>ID do negócio<input name="deal_id" type="number" min="1" required></label>
-<label>Quem realizou o contato<input name="realizado_por" required placeholder="Nome do atendente"></label>
-<label>Canal<select name="canal" required><option value="ligação">Ligação</option><option value="whatsapp">WhatsApp</option><option value="e-mail">E-mail</option></select></label>
-<label>Data e hora<input name="realizado_em" type="datetime-local" required></label>
-</div><label style="margin-top:14px">Observação (opcional)<textarea name="observacao" rows="2"></textarea></label>
-<button type="submit">Salvar contato</button><div class="msg" id="msg" role="status"></div></form>
-<h2>Contatos registrados</h2><div style="overflow:auto"><table><thead><tr><th>Negócio</th><th>Quem contatou</th><th>Canal</th><th>Data/hora</th><th>Observação</th></tr></thead><tbody id="rows"></tbody></table></div>
-</main><script>
-const $=x=>document.getElementById(x);
-async function load(){const r=await fetch('/api/contatos');const d=await r.json();$('rows').innerHTML=d.contatos.map(x=>`<tr><td>${x.deal_id}</td><td>${esc(x.realizado_por)}</td><td>${esc(x.canal)}</td><td>${esc(x.realizado_em)}</td><td>${esc(x.observacao||'')}</td></tr>`).join('')||'<tr><td colspan="5">Nenhum contato registrado.</td></tr>'}
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-$('f').addEventListener('submit',async e=>{e.preventDefault();const o=Object.fromEntries(new FormData(e.target));o.realizado_em=o.realizado_em.replace('T',' ')+':00';const r=await fetch('/api/contatos',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)});const d=await r.json();$('msg').textContent=r.ok?'Contato salvo.':(d.error||'Não foi possível salvar.');if(r.ok){e.target.reset();load()}});
-load();
-</script></body></html>"""
 
 HTML = r'''<!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#101a2e"><title>Mesa Certa • Painel Comercial</title>
@@ -202,4 +173,3 @@ if __name__ == '__main__':
     except Exception as e:
         print(f'Erro ao iniciar o servidor: {e}', flush=True)
         raise
-    ThreadingHTTPServer((HOST, PORT), Handler).serve_forever()
