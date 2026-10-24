@@ -144,6 +144,8 @@ td small{display:block;color:var(--muted);font-size:12.5px}
   <section class="card full" id="formulario">
     <h2>Pedidos recebidos pelo formulário</h2><p class="sub">Cobertura da base local do formulário</p>
     <div class="form"><div><b id="form-n">–</b><br><span class="sub" id="form-range"></span></div><ul class="leg" id="form-cats" style="max-width:360px"></ul></div>
+    <div class="tw" style="margin-top:14px"><table style="min-width:420px"><thead><tr><th>Semana (horário de Brasília)</th><th>Pedidos</th><th>Comerciais</th><th>Pessoas diferentes</th><th>Outros</th></tr></thead><tbody id="form-semanas"></tbody></table></div>
+    <p class="note">As semanas vão de segunda 00:00 a domingo 23:59 em Brasília. O formulário grava em UTC (3 horas à frente), por isso pedidos de domingo à noite aparecem como segunda nos registros crus. "Outros" são teste, suporte, fornecedor e spam.</p>
   </section>
 
 </main>
@@ -186,7 +188,7 @@ function render(){
     <div class="bar" role="img" aria-label="${esc(sdrName(s.responsavel))}: ${s.no_prazo} no prazo, ${s.atrasados} atrasados, ${s.sem_retorno} sem retorno, ${s.dentro_prazo} ainda dentro do prazo">
     <div style="width:${w(s.no_prazo)};background:var(--realizada)"></div><div style="width:${w(s.atrasados)};background:var(--contato)"></div><div style="width:${w(s.sem_retorno)};background:var(--perdido)"></div><div style="width:${w(s.dentro_prazo)};background:var(--cinza)"></div></div>
     <small>${s.no_prazo} no prazo · ${s.atrasados} atrasados · ${s.sem_retorno} sem retorno · ${s.dentro_prazo} dentro das 4 horas</small></div>`}).join('');
-  desenharPendentes(); desenharRecentes(); iniciarNegocios(); desenharFormulario();
+  desenharPendentes(); desenharRecentes(); iniciarNegocios(); desenharFormulario(); desenharSemanas();
 }
 function desenharPendentes(){
   const resp=[...new Set(D.pending.map(p=>p.responsavel))].sort();
@@ -237,6 +239,11 @@ function desenharFormulario(){
   $('form-range').textContent=r.inicio?`de ${d(r.inicio)} a ${d(r.fim)}`:'';
   const C=D.form_categories||{}, tot=Object.values(C).reduce((a,b)=>a+b,0)||1;
   $('form-cats').innerHTML=Object.entries(C).map(([k,n])=>`<li><i style="background:${k==='venda'?'var(--realizada)':'var(--cinza)'}"></i><span>${esc(CATNOME[k]||k)}${k==='venda'&&D.form_pessoas_venda?`<small style="display:block;color:var(--muted);font-size:12px">${nf(D.form_pessoas_venda)} pessoas diferentes · período inteiro, não só a semana</small>`:''}</span><b>${nf(n)}</b><em>${Math.round(n/tot*100)}%</em></li>`).join('');
+}
+function desenharSemanas(){
+  const S=D.form_semanas||[];
+  const t=S.reduce((a,x)=>({p:a.p+x.pedidos,c:a.c+x.comerciais,o:a.o+x.outros}),{p:0,c:0,o:0});
+  $('form-semanas').innerHTML=S.map(x=>`<tr><td>${esc(x.periodo)}</td><td>${nf(x.pedidos)}</td><td><b>${nf(x.comerciais)}</b></td><td>${nf(x.pessoas)}</td><td>${nf(x.outros)}</td></tr>`).join('')+(S.length?`<tr><td><b>Total</b></td><td><b>${nf(t.p)}</b></td><td><b>${nf(t.c)}</b></td><td>${nf(D.form_pessoas_venda)}</td><td><b>${nf(t.o)}</b></td></tr>`:'');
 }
 function desenharRecentes(){
   const R=[...D.deals].sort((a,b)=>String(b.atualizado_em).localeCompare(String(a.atualizado_em))).slice(0,8);
