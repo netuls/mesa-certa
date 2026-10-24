@@ -2,16 +2,20 @@
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs
 from pathlib import Path
-import json, sqlite3, datetime as dt, csv, io
+import json, sqlite3, datetime as dt, csv, io, base64, hmac
 
 BASE = Path(__file__).resolve().parent
 DB = Path(__import__('os').environ.get('MESA_DB', BASE / 'mesa_certa.db'))
 import os
 
-# Local por padrão: a tabela tem nome, e-mail e telefone de clientes e o painel não pede senha.
-# Só mude PANEL_HOST se houver autenticação na frente.
-HOST = os.environ.get('PANEL_HOST', '127.0.0.1')
-PORT = int(os.environ.get('PANEL_PORT', os.environ.get('PORT', '8080')))
+# No Render (variável RENDER definida automaticamente) o servidor precisa escutar em 0.0.0.0 e na porta PORT.
+# No computador local fica em 127.0.0.1:8080. PANEL_HOST força outro endereço.
+NO_RENDER = bool(os.environ.get('RENDER'))
+HOST = os.environ.get('PANEL_HOST', '0.0.0.0' if NO_RENDER else '127.0.0.1')
+PORT = int(os.environ.get('PORT', os.environ.get('PANEL_PORT', '10000' if NO_RENDER else '8080')))
+# Senha opcional (usuário e senha no navegador). Defina PANEL_PASSWORD no Render: a tabela tem dados de clientes.
+PANEL_USER = os.environ.get('PANEL_USER', 'mesacerta')
+PANEL_PASSWORD = os.environ.get('PANEL_PASSWORD', '')
 AS_OF = dt.datetime(2026, 10, 12, 8, 0, 0)  # referência exigida no enunciado
 FORM_FIM_UTC = '2026-10-12T00:00:00Z'  # fim do lote do webhook (domingo 21h em Brasília)
 STAGES = ['Novo', 'Contato', 'Reunião marcada', 'Reunião realizada', 'Perdido']
@@ -146,8 +150,17 @@ class Handler(BaseHTTPRequestHandler):
     def send_bytes(self, code, body, ctype):
         body = body.encode('utf-8') if isinstance(body, str) else body
         self.send_response(code); self.send_header('Content-Type', ctype); self.send_header('Content-Length', str(len(body))); self.send_header('Cache-Control','no-store'); self.end_headers(); self.wfile.write(body)
+    def autorizado(self):
+        if not PANEL_PASSWORD: return True
+        h = self.headers.get('Authorization', '')
+        if not h.startswith('Basic '): return False
+        try: usuario, _, senha = base64.b64decode(h[6:]).decode('utf-8').partition(':')
+        except Exception: return False
+        return hmac.compare_digest(usuario, PANEL_USER) and hmac.compare_digest(senha, PANEL_PASSWORD)
     def do_GET(self):
         path = urlparse(self.path).path
+        if path != '/health' and not self.autorizado():
+            self.send_response(401); self.send_header('WWW-Authenticate', 'Basic realm="Mesa Certa"'); self.send_header('Content-Length', '0'); self.end_headers(); return
         if path in ('/', '/index.html'):
             # Prefere o index.html externo para facilitar edicoes visuais; usa o HTML embutido como fallback.
             index_file = BASE / 'index.html'
@@ -165,6 +178,8 @@ class Handler(BaseHTTPRequestHandler):
 if __name__ == '__main__':
     print(f'Mesa Certa iniciado na porta {PORT}', flush=True)
     print(f'Banco em modo somente leitura: {DB}', flush=True)
+    if HOST != '127.0.0.1' and not PANEL_PASSWORD:
+        print('ATENCAO: painel acessível pela rede sem senha. Defina PANEL_PASSWORD.', flush=True)
 
     try:
         server = ThreadingHTTPServer((HOST, PORT), Handler)
